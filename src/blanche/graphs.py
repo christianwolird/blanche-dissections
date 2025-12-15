@@ -5,23 +5,23 @@ from blanche.backends.plantri import plantri_enumerate_polyhedra
 
 def _vertex_range_from_edges(E):
     """
-    Get an upper and lower bound on the number of vertices
+    Get upper and lower bound on the number of vertices
     in a polyhedral graph with a given number of edges.
     
-    Upper bound proof:
-        In a polyhedral graph, every vertex has degree at least three.
+    Upper bound derivation:
+        In a polyhedral graph, every vertex degree is at least three.
           ⇒ 3V <= (sum of all degrees) = 2E
           ⇒ V <= 2E/3
 
-    Lower bound proof:
+    Lower bound derivation:
         Each face touches at least three edges.
-          ⇒ 2E = (sum of all face sizes) >= 3F
-          ⇒ 2E/3 >= F
+          ⇒ 3F <= (sum of all face sizes) = 2E
+          ⇒ F <= 2E/3
         Polyhedral graphs satisfy Euler's formula.
           ⇒ V - E + F = 2
           ⇒ F = E - V + 2
         Putting these together.
-          ⇒ 2E/3 >= E - V + 2
+          ⇒ E - V + 2 <= 2E/3
           ⇒ V >= E/3 + 2
     """
 
