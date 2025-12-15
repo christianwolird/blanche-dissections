@@ -7,11 +7,32 @@ A toolkit for exploring dissections into non-congruent equal-area rectangles (**
 
 ---
 
+## Prerequisites
+
+- `plantri` — polyhedral graph enumeration
+- `nauty` — graph automorphisms to avoid redundancy
+
 ## Installation
 
 Clone the repository:
 
 ```bash
 git clone https://github.com/christianwolird/blanche-dissections.git
-git cd blanche-dissections
+cd blanche-dissections
 ```
+
+### Python environment (recommended)
+
+Create and activate a virtual environment.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install this Python package
+
+```bash
+pip install .
+```
+
