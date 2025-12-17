@@ -1,12 +1,12 @@
 import math
 
-from blanche.backends.plantri import plantri_enumerate_polyhedra
+from blanche.backends.plantri import call_plantri_polyhedra 
 
 
 def _vertex_range_from_edges(E):
     """
     Get upper and lower bound on the number of vertices
-    in a polyhedral graph with a given number of edges.
+    in a polyhedral graph given the number of edges.
     
     Upper bound derivation:
         In a polyhedral graph, every vertex degree is at least three.
@@ -52,5 +52,7 @@ def enumerate_polyhedra_by_edges(E, *, verbose=False):
         if verbose:
             print(f"  Generating polyhedral graphs on {V} vertices...")
 
-        for graph in plantri_enumerate_polyhedra(V, E, verbose=verbose):
+        for graph in call_plantri_polyhedra(V, E):
+            if verbose:
+                print("    Found:", graph)
             yield graph
