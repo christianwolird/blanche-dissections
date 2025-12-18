@@ -1,6 +1,45 @@
 import math
 
 from blanche.backends.plantri import call_plantri_polyhedra 
+from blanche.backends.nauty import nauty_automorphism_generators
+
+
+def enumerate_polyhedra_by_edges(E, *, verbose=False):
+    """
+    Enumerate polyhedral graphs with a given number of edges.
+
+    Plantri enumerates primarily for a given number of vertices,
+    not edges, so we bound the number of vertices
+    and call Plantri once for each possibility.
+    """
+
+    if verbose:
+        print(f"Generating polyhedral graphs with {E} edges...")
+
+    V_min, V_max = _vertex_range_from_edges(E)
+
+    if verbose:
+        print(f"Vertex range: {V_min} <= V <= {V_max}")
+
+    for V in range(V_min, V_max+1):
+        if verbose:
+            print(f"  Generating polyhedral graphs on {V} vertices...")
+
+        for graph in call_plantri_polyhedra(V, E):
+            if verbose:
+                print("    Found:", graph)
+            yield graph
+
+
+def unique_edges(graph):
+    for orbit in edge_orbits(graph):
+        yield orbit[0]
+
+
+def edge_orbits(graph):
+    aut_gens = nauty_automorphism_generators(graph)
+    print('aut_gens =', aut_gens)
+    return [[0], [1], [2]]
 
 
 def _vertex_range_from_edges(E):
@@ -31,28 +70,3 @@ def _vertex_range_from_edges(E):
     return V_min, V_max
 
 
-def enumerate_polyhedra_by_edges(E, *, verbose=False):
-    """
-    Enumerate polyhedral graphs with a given number of edges.
-
-    Plantri enumerates primarily for a given number of vertices,
-    not edges, so we bound the number of vertices
-    and call Plantri once for each possibility.
-    """
-
-    if verbose:
-        print(f"Generating polyhedral graphs with {E} edges...")
-
-    V_min, V_max = _vertex_range_from_edges(E)
-
-    if verbose:
-        print(f"Vertex range: {V_min} <= V <= {V_max}")
-
-    for V in range(V_min, V_max+1):
-        if verbose:
-            print(f"  Generating polyhedral graphs on {V} vertices...")
-
-        for graph in call_plantri_polyhedra(V, E):
-            if verbose:
-                print("    Found:", graph)
-            yield graph

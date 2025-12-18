@@ -4,7 +4,7 @@ Python wrapper for plantri, the graph enumeration software.
 Call plantri to get all polyhedral graphs (up to isomorphism)
 with a given number of vertices and edges.
 
-Repackage plantri results as Python dictionaries: {vertex:[neighbors]}
+Repackage plantri graphs as dictionaries {i:[neighbors of i]}
 The list of neighbors is in rotational order and gives a planar embedding.
 """
 
@@ -19,12 +19,11 @@ def parse_plantri_line(line):
 
     neighborhoods = edge_info.strip().split(",")
 
-    graph = []
-    for nbhd_str in neighborhoods:
-        graph.append([ord(ch) - ord("a") for ch in nbhd_str])
+    graph = dict()
+    for i, nbhd_str in enumerate(neighborhoods):
+        graph[i] = [ord(ch) - ord("a") for ch in nbhd_str] 
 
     return graph
-
 
 def call_plantri_polyhedra(V, E=None):
     """
