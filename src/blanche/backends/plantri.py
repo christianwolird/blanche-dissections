@@ -21,9 +21,10 @@ def parse_plantri_line(line):
 
     graph = dict()
     for i, nbhd_str in enumerate(neighborhoods):
-        graph[i] = [ord(ch) - ord("a") for ch in nbhd_str] 
+        graph[i] = [ord(ch) - ord("a") for ch in nbhd_str]
 
     return graph
+
 
 def call_plantri_polyhedra(V, E=None):
     """

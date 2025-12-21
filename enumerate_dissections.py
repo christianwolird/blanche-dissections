@@ -1,6 +1,6 @@
 import argparse
 
-from blanche.graphs import enumerate_polyhedra_by_edges, unique_edges 
+from blanche.graphs import enumerate_polyhedra_by_edges, get_unique_edges 
 
 
 def main():
@@ -25,8 +25,9 @@ def main():
         print(f"Enumerating Blanche dissections with {args.n} rectangles...")
 
     for graph in enumerate_polyhedra_by_edges(args.n+1, verbose=args.verbose):
-        for edge in unique_edges(graph):
-            pass
+         unique_edges = get_unique_edges(graph)
+         if args.verbose:
+             print(f"    Found a graph with {len(unique_edges)} unique edges.")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import math
 
 from blanche.backends.plantri import call_plantri_polyhedra 
-from blanche.backends.nauty import nauty_automorphism_generators
+from blanche.backends.nauty import get_automorphism_generators
 
 
 def enumerate_polyhedra_by_edges(E, *, verbose=False):
@@ -26,20 +26,7 @@ def enumerate_polyhedra_by_edges(E, *, verbose=False):
             print(f"  Generating polyhedral graphs on {V} vertices...")
 
         for graph in call_plantri_polyhedra(V, E):
-            if verbose:
-                print("    Found:", graph)
             yield graph
-
-
-def unique_edges(graph):
-    for orbit in edge_orbits(graph):
-        yield orbit[0]
-
-
-def edge_orbits(graph):
-    aut_gens = nauty_automorphism_generators(graph)
-    print('aut_gens =', aut_gens)
-    return [[0], [1], [2]]
 
 
 def _vertex_range_from_edges(E):
@@ -70,3 +57,41 @@ def _vertex_range_from_edges(E):
     return V_min, V_max
 
 
+def get_unique_edges(graph):
+    return [min(orbit) for orbit in get_edge_orbits(graph)]
+
+
+def get_edge_orbits(graph):
+    aut_gens = get_automorphism_generators(graph)
+
+    edges = set()
+    for i in graph.keys():
+        for j in graph[i]:
+            edges.add((min(i,j), max(i,j)))
+
+    visited = set()
+    
+    for edge in edges:
+        if edge in visited:
+            continue
+
+        orbit = set()
+        stack = [edge]
+        visited.add(edge)
+
+        while stack:
+            u = stack.pop()
+            orbit.add(u)
+
+            for aut in aut_gens:
+                v = _edge_image(u, aut)
+                if v not in visited:
+                    visited.add(v)
+                    stack.append(v)
+
+        yield orbit
+
+def _edge_image(edge, aut):
+    i, j = edge
+    i_, j_ = aut[i], aut[j]
+    return (min(i_, j_), max(i_, j_))
