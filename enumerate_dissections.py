@@ -1,6 +1,6 @@
 import argparse
 
-from blanche.graphs import enumerate_polyhedra_by_edges, get_unique_edges 
+from blanche.core.graphs import enumerate_polyhedra_by_edges, get_unique_edges 
 
 
 def main():
