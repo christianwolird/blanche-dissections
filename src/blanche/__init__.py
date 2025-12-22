@@ -1,1 +1,1 @@
-# TODO
+"""Blanche dissections toolkit."""

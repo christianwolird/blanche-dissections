@@ -111,7 +111,7 @@ def get_edge_orbits(graph):
 
 def _edge_image(edge, aut):
     """
-    Apply vertex permutation `aut" to an edge.
+    Apply vertex permutation `aut` to an edge.
     """
     i, j = edge
     i_, j_ = aut[i], aut[j]
