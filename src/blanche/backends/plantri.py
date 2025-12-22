@@ -1,11 +1,12 @@
 """
 Python wrapper for plantri, the graph enumeration software.
 
-Call plantri to get all polyhedral graphs (up to isomorphism)
-with a given number of vertices and edges.
+This backend enumerates polyhedral graphs (simple, planar, 3-connected)
+up to isomorphism using plantri, then converts the graphs to adjacency
+dictionaries.
 
-Repackage plantri graphs as dictionaries {i:[neighbors of i]}
-The list of neighbors is in rotational order and gives a planar embedding.
+Plantri's `-a` flag means human-readable ASCII format.
+Neighbors are listed in rotational order, giving a planar embedding.
 """
 
 
@@ -14,6 +15,12 @@ import subprocess
 
 
 def parse_plantri_line(line):
+    """
+    Parse a single line of plantri `-a` output, representing one graph.
+
+    Returns a dictionary `graph` where graph[i] = [neighbors of i].
+    Neighbors are listed in rotational order.
+    """
     n_str, edge_info = line.split()
     num_vertices = int(n_str)
 
@@ -28,24 +35,27 @@ def parse_plantri_line(line):
 
 def call_plantri_polyhedra(V, E=None):
     """
-    Call: plantri -p -c3 -a {V} -e{E}  
-    Yield resulting graphs as dictionaries.
+    Enumerate polyhedral graphs with V vertices
+    (and optionally E edges)
+
+    This calls: 
+        plantri -p -c3 -a V [-eE]
+
+    Returns resulting graphs as adjacency dictionaries.
     """
 
-    # Find plantri
+    # Locate plantri executable.
     plantri_path = shutil.which("plantri")
     if plantri_path is None:
         raise RuntimeError("plantri not found")
 
-    # Ask plantri for simple planar 3-connected graphs on 'V' vertices
-    # in human-readable ASCII format,
-    # optionally with exactly 'E' edges
+    # Build plantri command.
     cmd = [plantri_path, "-p", "-c3", "-a"]
     cmd.append(str(V))
     if E is not None:
         cmd.append(f"-e{E}")
 
-    # Run plantri.
+    # Launch plantri.
     proc = subprocess.Popen(
         cmd,
         stdout=subprocess.PIPE,
@@ -53,14 +63,14 @@ def call_plantri_polyhedra(V, E=None):
         text=True
     )
 
-    # Iterate plantri's output as it runs.
+    # Iterate plantri's output.
     for line in proc.stdout:
         line = line.strip()
         if line:
             graph = parse_plantri_line(line)
             yield graph
 
-    # Print any errors/crashes
+    # Check for errors or crashes.
     returncode = proc.wait()
     if returncode != 0:
         err = proc.stderr.read()

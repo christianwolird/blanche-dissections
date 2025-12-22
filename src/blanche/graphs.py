@@ -1,3 +1,5 @@
+"""Utilities for enumerating polyhedral graphs and edge orbits."""
+
 import math
 
 from blanche.backends.plantri import call_plantri_polyhedra 
@@ -6,11 +8,11 @@ from blanche.backends.nauty import get_automorphism_generators
 
 def enumerate_polyhedra_by_edges(E, *, verbose=False):
     """
-    Enumerate polyhedral graphs with a given number of edges.
+    Yield polyhedral graphs with exactly E edges.
 
-    Plantri enumerates primarily for a given number of vertices,
-    not edges, so we bound the number of vertices
-    and call Plantri once for each possibility.
+    Plantri's primary parameter is the number of vertices V, so we
+    bound the possible number of vertices for a polyhedral graph with
+    E edges and call plantri once for each V in that range.
     """
 
     if verbose:
@@ -58,12 +60,27 @@ def _vertex_range_from_edges(E):
 
 
 def get_unique_edges(graph):
+    """
+    Pick one edge from each automorphism orbit.
+
+    Returns a list of (i, j) with i < j.
+    """
     return [min(orbit) for orbit in get_edge_orbits(graph)]
 
 
 def get_edge_orbits(graph):
+    """
+    Yield edge-orbits under the graph's automorphism group.
+
+    The backend returns generators of the automorphism group as
+    permutations of vertices. The orbit is computed by picking a seed
+    edge and doing a DFS with the generators.
+
+    Returns a list of sets
+    """
     aut_gens = get_automorphism_generators(graph)
 
+    # Build the edge set.
     edges = set()
     for i in graph.keys():
         for j in graph[i]:
@@ -79,6 +96,7 @@ def get_edge_orbits(graph):
         stack = [edge]
         visited.add(edge)
 
+        # DFS over the orbit: apply each generator to each new edge.
         while stack:
             u = stack.pop()
             orbit.add(u)
@@ -92,6 +110,9 @@ def get_edge_orbits(graph):
         yield orbit
 
 def _edge_image(edge, aut):
+    """
+    Apply vertex permutation `aut" to an edge.
+    """
     i, j = edge
     i_, j_ = aut[i], aut[j]
     return (min(i_, j_), max(i_, j_))
