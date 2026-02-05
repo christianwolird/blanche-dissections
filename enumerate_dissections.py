@@ -35,12 +35,21 @@ def parse_args():
         action="store_true",
         help="prints info throughout the computation",
     )
+    parser.add_argument(
+        "-d", "--debug",
+        action="store_true",
+        help="enables full debug output",
+    )
 
     return parser.parse_args()
 
 
 def configure_logging(args):
-    console_level = logging.INFO if args.verbose else logging.WARNING
+    console_level = logging.WARNING
+    if args.verbose:
+        console_level = logging.INFO
+    if args.debug:
+        console_level = logging.DEBUG
 
     run_dir = Path("results") / f"square_{args.n}_rect"
     run_dir.mkdir(parents=True, exist_ok=True)
