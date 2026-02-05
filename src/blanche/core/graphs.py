@@ -1,10 +1,12 @@
 """Utilities for enumerating polyhedral graphs and edge orbits."""
 
+import logging
 import math
 
 from blanche.backends.plantri import call_plantri_polyhedra 
 from blanche.backends.nauty import get_automorphism_generators
 
+logger = logging.getLogger(__name__)
 
 def enumerate_polyhedra_by_edges(E, *, verbose=False):
     """
@@ -15,17 +17,13 @@ def enumerate_polyhedra_by_edges(E, *, verbose=False):
     E edges and call plantri once for each V in that range.
     """
 
-    if verbose:
-        print(f"Generating polyhedral graphs with {E} edges...")
-
     V_min, V_max = _vertex_range_from_edges(E)
 
-    if verbose:
-        print(f"Vertex range: {V_min} <= V <= {V_max}")
+    logger.info("Generating polyhedral graphs with %d edges...", E)
+    logger.info("Vertex range: %d <= V <= %d", V_min, V_max)
 
     for V in range(V_min, V_max+1):
-        if verbose:
-            print(f"  Generating polyhedral graphs on {V} vertices...")
+        logger.info("Generating polyhedral graphs on %d vertices...", V)
 
         for graph in call_plantri_polyhedra(V, E):
             yield graph
