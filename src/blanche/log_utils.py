@@ -1,11 +1,17 @@
+"""Central logging setup for Blanche."""
+
 import logging
 import sys
 
 
+class AddTags(logging.Filter):
+    def filter(self, record):
+        record.leveltag = f"[{record.levelname}]" 
+        record.moduletag = f"({record.module})" 
+        return True
+
 def setup_logging(log_path, console_level):
     """
-    Central logging setup for Blanche.
-
     This function is called once by the top-level script. All modules then use
     `logging.getLogger(__name__)` and do not configure their own handlers.
 
@@ -36,9 +42,11 @@ def setup_logging(log_path, console_level):
     # File output: full DEBUG-level trace for reconstruction.
     computation_handler = logging.FileHandler(log_path, mode="w", encoding="utf-8")
     computation_handler.setLevel(logging.DEBUG)
+    computation_handler.addFilter(AddTags())
     computation_handler.setFormatter(
         logging.Formatter(
-            "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+            "%(leveltag)-7s %(moduletag)-50s %(asctime)s\n"
+            " ⤷ %(message)s"
         )
     )
 
