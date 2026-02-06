@@ -9,31 +9,34 @@ Plantri's `-a` flag means human-readable ASCII format.
 Neighbors are listed in rotational order, giving a planar embedding.
 """
 
-
+import logging
 import shutil
 import subprocess
+
+from blanche.core.planar_graph import PlanarGraph
+
+logger = logging.getLogger(__name__)
 
 
 def parse_plantri_line(line):
     """
     Parse a single line of plantri `-a` output, representing one graph.
 
-    Returns a dictionary `graph` where graph[i] = [neighbors of i].
-    Neighbors are listed in rotational order.
+    Returns an `EmbeddedGraph` object.
     """
     n_str, edge_info = line.split()
     num_vertices = int(n_str)
 
     neighborhoods = edge_info.strip().split(",")
 
-    graph = dict()
+    adj_dict = dict()
     for i, nbhd_str in enumerate(neighborhoods):
-        graph[i] = [ord(ch) - ord("a") for ch in nbhd_str]
+        adj_dict[i] = [ord(ch) - ord("a") for ch in nbhd_str]
 
-    return graph
+    return PlanarGraph(adj_dict)
 
 
-def call_plantri_polyhedra(V, E=None):
+def polyhedral_graphs_from_plantri(V, E=None):
     """
     Enumerate polyhedral graphs with V vertices
     (and optionally E edges)
@@ -41,7 +44,7 @@ def call_plantri_polyhedra(V, E=None):
     This calls: 
         plantri -p -c3 -a V [-eE]
 
-    Returns resulting graphs as adjacency dictionaries.
+    Returns a list of `EmbeddedGraph` objects.
     """
 
     # Locate plantri executable.
@@ -63,15 +66,21 @@ def call_plantri_polyhedra(V, E=None):
         text=True
     )
 
+    graphs = []
+
     # Iterate plantri's output.
     for line in proc.stdout:
         line = line.strip()
         if line:
             graph = parse_plantri_line(line)
-            yield graph
+            graphs.append(graph)
+
+            logger.debug("Found graph: %s", graph)
 
     # Check for errors or crashes.
     returncode = proc.wait()
     if returncode != 0:
         err = proc.stderr.read()
         raise RuntimeError(f"plantri failed (exit {returncode}):\n{err}")
+
+    return graphs

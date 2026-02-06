@@ -2,21 +2,27 @@ import argparse
 import logging
 from pathlib import Path
 
-from blanche.core.graphs import enumerate_polyhedra_by_edges, get_unique_edges
+from blanche.core.graph_utils import polyhedral_graphs_of_size, remove_duals 
 from blanche.log_utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
 
 def run_enumeration(args):
-    # High-level narration belongs at INFO
-    logger.info("Enumerating Blanche dissections with %d rectangles", args.n)
+    """This is the core mathematical workflow."""
+    logger.info("Enumerating Blanche dissections with %d rectangles...", args.n)
 
-    for graph in enumerate_polyhedra_by_edges(args.n + 1, verbose=args.verbose):
-        unique_edges = get_unique_edges(graph)
+    graphs = polyhedral_graphs_of_size(args.n + 1, verbose=args.verbose)
+    logger.info("Graph enumeration complete: found %d graphs in total.", len(graphs))
 
-        # Per-graph chatter belongs at DEBUG so INFO stays readable
-        logger.debug("Found a graph with %d unique edge types", len(unique_edges))
+    logger.info("Removing duals...")
+
+    unique_graphs = remove_duals(graphs)
+    logger.info("Only %d graphs remain after removing duals.", len(unique_graphs))
+
+    for graph in unique_graphs:
+        unique_edges = graph.get_unique_edges()
+        logger.info("Current graph has %d unique edge types", len(unique_edges))
 
 
 def main():
