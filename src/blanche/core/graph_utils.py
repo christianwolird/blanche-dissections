@@ -24,7 +24,7 @@ def remove_duals(graphs):
 
         # Accept g and record its planar dual.
         kept_graphs.append(g)
-        kept_duals.append(g.get_dual())
+        kept_duals.append(g.dual())
 
     return kept_graphs 
 

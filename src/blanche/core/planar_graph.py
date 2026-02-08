@@ -1,5 +1,5 @@
 """
-Embedded graph object.
+Planar graph object.
 
 Represents a graph with an adjacency dictionary which doubles as a rotation system.
     adj_dict[v] = [neighbors of the vertex v in rotational order]
@@ -22,7 +22,7 @@ class PlanarGraph:
     def is_isomorphic_to(self, other):
         return is_isomorphic_nauty(self.adj_dict, other.adj_dict)
 
-    def get_dual(self):
+    def dual(self):
         """Construct the planar dual graph."""
         faces, boundary_of = self._faces_and_boundary_map()
 
@@ -93,15 +93,15 @@ class PlanarGraph:
 
         return faces, boundary_of
 
-    def get_unique_edges(self):
+    def edge_orbit_reps(self):
         """
         Pick one edge from each automorphism orbit.
 
         Returns a list of (u, v) with u < v.
         """
-        return [min(orbit) for orbit in self.get_edge_orbits()]
+        return [min(orbit) for orbit in self.edge_orbits()]
 
-    def get_edge_orbits(self):
+    def edge_orbits(self):
         """
         Yield edge-orbits under the graph's automorphism group.
 
@@ -147,7 +147,7 @@ def _edge_image(edge, aut):
     """
     Apply vertex permutation `aut` to an edge.
 
-    Helper function for `EmbeddedGraph.get_edge_orbits`
+    Helper function for calculating edge orbits.
     """
     u, v = edge
     u_, v_ = aut[u], aut[v]
