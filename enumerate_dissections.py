@@ -19,14 +19,9 @@ def run_enumeration(args):
     )
     logger.info("Graph enumeration complete: found %d graphs in total.", len(graphs))
 
-    logger.info("Removing duals...")
-
-    unique_graphs = remove_duals(graphs)
-    logger.info("Only %d graphs remain after removing duals.", len(unique_graphs))
-
-    for graph in unique_graphs:
+    for graph_id, graph in enumerate(graphs, start=1):
         unique_edges = graph.edge_orbit_reps()
-        logger.info("Current graph has %d unique edge types", len(unique_edges))
+        logger.info("Graph #%d has %d types of edges.", graph_id, len(unique_edges))
 
 
 def main():

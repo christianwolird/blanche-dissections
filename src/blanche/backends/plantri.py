@@ -22,7 +22,7 @@ def parse_plantri_line(line):
     """
     Parse a single line of plantri `-a` output, representing one graph.
 
-    Returns an `EmbeddedGraph` object.
+    Returns an `PlanarGraph` object.
     """
     n_str, edge_info = line.split()
     num_vertices = int(n_str)
@@ -44,7 +44,7 @@ def polyhedral_graphs_from_plantri(V, E=None):
     This calls: 
         plantri -p -c3 -a V [-eE]
 
-    Returns a list of `EmbeddedGraph` objects.
+    Returns a list of `PlanarGraph` objects.
     """
 
     # Locate plantri executable.
@@ -75,7 +75,7 @@ def polyhedral_graphs_from_plantri(V, E=None):
             graph = parse_plantri_line(line)
             graphs.append(graph)
 
-            logger.debug("Found graph: %s", graph)
+            logger.debug("New graph: %s", graph)
 
     # Check for errors or crashes.
     returncode = proc.wait()
