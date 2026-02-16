@@ -109,3 +109,12 @@ and be available on your system `PATH`.
       -d, --debug    print all information
     ```
 
+
+## Resources
+
+
+
+* [The first Blanche Dissection.](https://mathworld.wolfram.com/BlanchesDissection.html)
+  An irrational 7-rectangle dissection published in Eureka by Blanche Descartes (1971).
+
+
