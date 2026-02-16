@@ -112,9 +112,9 @@ and be available on your system `PATH`.
 
 ## Resources
 
-* [Proof: An integer Blanche Dissection requires an $n\times n$ square of size at least $n>1000$](https://arxiv.org/abs/2311.02385)
-  (2023).
-  The authors use "Perfect Mondrian Partition" to mean **Blanche Dissection**.
+* [Paper (2023](https://arxiv.org/abs/2311.02385)
+  An integer Blanche Dissection requires an $n\times n$ square of size at least $n>1000$]
+  The authors use "Perfect Mondrian Partition" to refer to a Blanche Dissection.
 
 * [The first Blanche Dissection](https://mathworld.wolfram.com/BlanchesDissection.html).
   An irrational 7-rectangle dissection published in Eureka by Blanche Descartes (1971).
