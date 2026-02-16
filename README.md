@@ -112,9 +112,13 @@ and be available on your system `PATH`.
 
 ## Resources
 
+* "[There is No Perfect Mondrian Partition For Squares of Side Lengths Less Than 1001](https://arxiv.org/abs/2311.02385)"
+  (2023). 
+  The authors use "Perfect Mondrian Partition" means a **Blanche Dissection** in this paper.
 
-
-* [The first Blanche Dissection.](https://mathworld.wolfram.com/BlanchesDissection.html)
+* [The first Blanche Dissection](https://mathworld.wolfram.com/BlanchesDissection.html).
   An irrational 7-rectangle dissection published in Eureka by Blanche Descartes (1971).
+  Now called "Blanche's Dissection". We propose to call this the **Tetrahedral Blanche 
+  Dissection** since it corresponds to a tetrahedron under Pegg's correspondence.
 
 
