@@ -112,13 +112,25 @@ and be available on your system `PATH`.
 
 ## Resources
 
-* [Paper (2023](https://arxiv.org/abs/2311.02385)
-  An integer Blanche Dissection requires an $n\times n$ square of size at least $n>1000$]
-  The authors use "Perfect Mondrian Partition" to refer to a Blanche Dissection.
+* [*"There is no perfect Mondrian partition for squares of side lengths less than 1001"*](https://arxiv.org/abs/2311.02385)
+  * Published 2023.
+  * By García-Colín, Leemans, Müßig, & Roldán (memory trick: the **GL**A**M**O**R** team)
+  * Proves an integer Blanche dissection requires an nxn square of size n>1000.
 
-* [The first Blanche Dissection](https://mathworld.wolfram.com/BlanchesDissection.html).
-  An irrational 7-rectangle dissection published in Eureka by Blanche Descartes (1971).
-  Now called "Blanche's Dissection". We propose to call this the **Tetrahedral Blanche 
-  Dissection** since it corresponds to a tetrahedron under Pegg's correspondence.
+* [*"Decompositions of a rectangle into non-congruent rectangles of equal area"*](https://arxiv.org/abs/2007.09643)
+  * By Dalfó, Fiol, López, & Martínez-Pérez (the Spain team)
+  * Proves an integer Blanche dissection must involve at least 9 rectangles.
+
+* [Ed Pegg's Community Post (2016)](https://community.wolfram.com/groups/-/m/t/903043).
+  * Dozens of numerical Blanche dissections with up to 14 rectangles.
+  * First known statement of the polyhedral graph correspondence, which we therefore 
+  call **Pegg's correspondence**.
+
+* [The first Blanche Dissection (1971)](https://mathworld.wolfram.com/BlanchesDissection.html).
+  * An irrational 7-rectangle dissection published in Eureka by Blanche Descartes
+  (pseudonym for R. Leonard Brooks, Arthur Harold Stone, Cedric Smith, and W. T. Tutte).
+  * Currently termed "Blanche's Dissection". 
+  We propose to call this the **tetrahedral Blanche dissection** since it corresponds 
+  to a tetrahedron under Pegg's correspondence.
 
 
