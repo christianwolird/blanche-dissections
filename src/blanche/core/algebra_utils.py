@@ -1,4 +1,3 @@
 # TODO
 
-def kirchhoff_ideal(graph, edge):
-    return
+# For saturating ideals and other similar operations.

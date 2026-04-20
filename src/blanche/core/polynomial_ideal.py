@@ -1,6 +1,7 @@
 # TODO
 
-class Ideal:
+# Holds a list of polynomials and variables.
+class PolynomialIdeal:
     def __init__(self, polynomials):
         return
     def local_extension(self):

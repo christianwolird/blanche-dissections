@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 
 from blanche.core.graph_utils import polyhedral_graphs_of_size
-from blanche.core.algebra_utils import kirchhoff_ideal
+from blanche.core.kirchhoff import graph_to_kirchhoff_ideal
 from blanche.log_utils import setup_logging
 
 logger = logging.getLogger(__name__)
@@ -31,11 +31,10 @@ def run_enumeration(args, results_file):
             logger.debug("Checking edge #%d...", edge_id)
             results_file.write(f"Edge #{edge_id}: {edge}\n\n")
             
-            K = kirchhoff_ideal(graph, edge)
+            K = graph_to_kirchhoff_ideal(graph, edge)
             # Algebra will go here eventually.
-            # Something like:
-            # K = kirkhoff(graph, edge)
             # G = groebner(K)
+            # etc.
 
         results_file.write("\n")
 
